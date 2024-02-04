@@ -1,12 +1,15 @@
 package com.writer.cymmetri.apibasedsso.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@Controller
+@RequestMapping("/api")
 public class DashboardController {
-	
-	@GetMapping("/dashboard")
-	public String showDashboard() {
-		return "Dashboard";
-	}
-
+    
+    @GetMapping("/dashboard")//http://localhost:8080/api/dashboard
+    public String showDashboard() {
+        return "Dashboard";
+    }
 }

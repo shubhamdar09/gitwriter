@@ -10,89 +10,40 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "user")
-@SuppressWarnings("unused")
+@Getter
+@Setter
 public class User {
+
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
-	private String email;
-	private String firstName;
-	private String lastName;
-	private String login;
-	private String password;
-	private String mobileNo;
+
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String login;
+    private String password;
+    private String mobileNo;
+
+    // Lombok generates getters and setters
+
+    public User(Integer userId, String email, String firstName, String lastName, String login, String password, String mobileNo) {
+        this.userId = userId;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
+        this.mobileNo = mobileNo;
+    }
 
 	public Integer getUserId() {
+		// TODO Auto-generated method stub
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    // No-args constructor can be omitted unless needed
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-
-	public User(Integer userId, String email, String firstName, String lastName, String login, String password,
-			String mobileNo) {
-		super();
-		this.userId = userId;
-		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.login = login;
-		this.password = password;
-		this.mobileNo = mobileNo;
-	}
-
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+    // Additional methods or customization can be added as needed
 }

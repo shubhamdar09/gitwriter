@@ -14,9 +14,6 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public String callApi(String urlStr, String inputStr) throws IOException {
-        // The implementation of the callApi method goes here
-        // Make sure to replace the method body with the actual logic
-
         URL url = new URL(urlStr);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -30,14 +27,21 @@ public class ApiServiceImpl implements ApiService {
             os.write(input, 0, input.length);
         }
 
-        StringBuilder response = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-            String responseLine;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
-        }
+        int responseCode = connection.getResponseCode();
 
-        return response.toString();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            StringBuilder response = new StringBuilder();
+            try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(), "utf-8");
+                 BufferedReader br = new BufferedReader(isr)) {
+
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+            }
+            return response.toString();
+        } else {
+            throw new IOException("HTTP request failed with response code: " + responseCode);
+        }
     }
 }

@@ -18,7 +18,7 @@ import java.util.Properties;
 public class TokenServiceImpl implements TokenService {
 
     @Autowired
-    private ApiServiceImpl apiService;
+    private ApiService apiService;
 
     @Value("${app.id}")
     private String appId;
@@ -27,47 +27,34 @@ public class TokenServiceImpl implements TokenService {
     private String appPass;
 
     @Override
-    public String processToken(String authToken, HttpServletRequest req) throws IOException {
+    public String processToken(String authToken, HttpServletRequest req) {
         String ipAddress = req.getRemoteAddr();
-        System.out.println("IP: " + ipAddress);
-
-        Properties properties = new Properties();
-        boolean allowUser = false;
 
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("App.properties")) {
+            Properties properties = new Properties();
             properties.load(inputStream);
 
-            // Create TokenRequest object
             TokenRequest tokenRequest = new TokenRequest(appId, appPass, authToken, ipAddress);
-            System.out.println(tokenRequest);
 
-            // Convert TokenRequest to query string
             String inputStr = "app_id=" + tokenRequest.getAppId() +
-                              "&app_pass=" + tokenRequest.getAppPass() +
-                              "&user_session_string=" + tokenRequest.getUserSessionString() +
-                              "&user_ip=" + tokenRequest.getUserIp();
-            System.out.println(inputStr);
+                    "&app_pass=" + tokenRequest.getAppPass() +
+                    "&user_session_string=" + tokenRequest.getUserSessionString() +
+                    "&user_ip=" + tokenRequest.getUserIp();
 
-            // Call the API with the query string
             String response = apiService.callApi("https://shubham09.cymmetri.io/api-sso/api/sso/validateToken", inputStr);
-            System.out.println(response);
 
-            // Parse the response into TokenResponse
             TokenResponse tokenResponse = new TokenResponse();
             JSONObject respJSON = new JSONObject(response);
             tokenResponse.setAllowUser(respJSON.getBoolean("allow_user"));
-            // Set other properties of tokenResponse based on your response JSON
 
-            System.out.println(tokenResponse.isAllowUser());
-
+            if (tokenResponse.isAllowUser()) {
+                return "Dashboard";
+            } else {
+                return "redirect:/Login.jsp";
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (allowUser) {
-            return "Dashboard";
-        } else {
-            return "redirect:/Login.jsp";
+            return "redirect:/error.jsp";
         }
     }
 }

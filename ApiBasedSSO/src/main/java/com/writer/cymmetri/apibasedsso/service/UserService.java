@@ -7,11 +7,15 @@ import java.util.Optional;
 
 public interface UserService {
 
+    Integer addUser(User user);
 
-	public Integer addUser(User user);
-	public List<User> getUsers();
-	public User getUser(Integer userId);
-	public void deleteUser(Integer userId);
-	public void updateUser(User user);
-	public User getUserByEmail(String email);
+    List<User> getUsers();
+
+    Optional<User> getUser(Integer userId);
+
+    void deleteUser(Integer userId);
+
+    void updateUser(User user);
+
+    Optional<User> getUserByEmail(String email);
 }

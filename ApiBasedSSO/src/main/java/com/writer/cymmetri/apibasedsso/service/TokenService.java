@@ -7,5 +7,4 @@ import java.io.IOException;
 public interface TokenService {
 
     String processToken(String authToken, HttpServletRequest req) throws IOException;
-
 }
